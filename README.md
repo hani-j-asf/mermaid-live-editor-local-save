@@ -1,11 +1,13 @@
 [![Join our Discord!](https://img.shields.io/static/v1?message=join%20chat&color=9cf&logo=discord&label=discord)](https://discord.gg/sKeNQX4Wtj)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/27fa023d-7c73-4a3f-9791-b3b657a47100/deploy-status)](https://app.netlify.com/sites/mermaidjs/deploys)
 
-# Mermaid Live Editor
+# Mermaid Live Editor – Local Save Edition
 
-Edit, preview and share mermaid charts/diagrams.
+**Open a `.mmd` / `.md` file, edit with live preview, press Ctrl+S – saved straight back to your disk. No downloads, runs on your own PC.**
 
-> **About this fork:** adds working with real files on your disk, running fully locally.
+Unofficial fork of [mermaid-js/mermaid-live-editor](https://github.com/mermaid-js/mermaid-live-editor) (the code behind [mermaid.live](https://mermaid.live)). The difference: mermaid.live can open a file, but saving always downloads a new copy. This fork writes back into the file you opened.
+
+> **What this fork adds:**
 >
 > - **Open** a `.mmd` or `.md` file (Ctrl+O). In Markdown files only the first ` ```mermaid ` block is edited; the rest of the file stays untouched.
 > - **Save** straight back into that file with **Ctrl+S** (Ctrl+Shift+S: save as). No downloads, line endings are preserved.
