@@ -14,8 +14,41 @@
     <meta name="theme-color" content="#ff3670" />
     <link rel="manifest" href="%sveltekit.assets%/manifest.json" />
     %sveltekit.head%
+    <style>
+      /* Boot splash until the app mounts; avoids a white flash before the CSS loads. */
+      html {
+        background: #fff;
+      }
+      html.dark {
+        background: #020817;
+      }
+      .boot-splash {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-content: center;
+      }
+      .boot-splash::after {
+        content: '';
+        width: 44px;
+        height: 44px;
+        border: 4px solid #ff367033;
+        border-top-color: #ff3670;
+        border-radius: 50%;
+        animation: boot-spin 0.9s linear infinite;
+      }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      #svelte:has(> :not(script)) ~ .boot-splash {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div id="svelte">%sveltekit.body%</div>
+    <div class="boot-splash" aria-hidden="true"></div>
   </body>
 </html>

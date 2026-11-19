@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Splash shown by start-app.cmd while the dev server boots; switches to the editor once it answers. -->
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mermaid Editor</title>
+    <style>
+      :root { color-scheme: light dark; --bg: #fff; --fg: #333; }
+      @media (prefers-color-scheme: dark) { :root { --bg: #020817; --fg: #ddd; } }
+      html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font: 16px system-ui, sans-serif; }
+      body { display: grid; place-content: center; justify-items: center; gap: 20px; }
+      .spinner { width: 44px; height: 44px; border: 4px solid #ff367033; border-top-color: #ff3670; border-radius: 50%; animation: spin 0.9s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 3s; } }
+      small { opacity: 0.6; }
+    </style>
+  </head>
+  <body>
+    <div class="spinner" role="progressbar" aria-label="Lädt"></div>
+    <div>Mermaid Editor startet …</div>
+    <small id="status">Server wird gestartet</small>
+    <script>
+      const target = 'http://localhost:3000/edit';
+      const started = Date.now();
+      async function poll() {
+        try {
+          // no-cors: we only need to know the server answers, not read the response
+          await fetch(target, { mode: 'no-cors', cache: 'no-store' });
+          document.getElementById('status').textContent = 'Editor wird geladen';
+          location.replace(target);
+        } catch {
+          const s = Math.round((Date.now() - started) / 1000);
+          document.getElementById('status').textContent = `Server wird gestartet (${s} s)`;
+          setTimeout(poll, 500);
+        }
+      }
+      poll();
+    </script>
+  </body>
+</html>
