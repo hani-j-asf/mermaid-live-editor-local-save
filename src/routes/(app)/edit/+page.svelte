@@ -33,6 +33,7 @@
   import { shouldShowEditorChooser } from '#lib/util/migration/domainMigration.js';
   import { PanZoomState, type NormalizedViewport } from '#lib/util/panZoom.js';
   import { env } from '#lib/util/env.js';
+  import { file, isSupported, openFile, saveFile } from '#lib/util/fileAccess.svelte.js';
   import { validatedState, updateCodeStore, urls } from '#lib/util/state.svelte.js';
   import { v13 } from '#lib/util/v13.svelte.js';
   import { logEvent, logMermaidChartClick } from '#lib/util/stats.js';
@@ -102,6 +103,18 @@
 
   let isHistoryOpen = $state(false);
 
+  const onKeydown = (event: KeyboardEvent) => {
+    if (!(event.ctrlKey || event.metaKey) || !isSupported()) return;
+    const key = event.key.toLowerCase();
+    if (key === 's') {
+      event.preventDefault();
+      void saveFile(event.shiftKey);
+    } else if (key === 'o') {
+      event.preventDefault();
+      void openFile();
+    }
+  };
+
   let editorPane: Resizable.Pane | undefined;
   $effect(() => {
     if (isMobile) {
@@ -109,6 +122,11 @@
     }
   });
 </script>
+
+<svelte:window onkeydown={onKeydown} />
+<svelte:head>
+  {#if file.name}<title>{file.name} – Mermaid Live Editor</title>{/if}
+</svelte:head>
 
 <div class="flex h-full flex-col overflow-hidden">
   {#snippet mobileToggle()}
@@ -124,6 +142,14 @@
   {/snippet}
 
   <Navbar mobileToggle={isMobile ? mobileToggle : undefined}>
+    {#if isSupported()}
+      {#if file.name}<span class="text-sm opacity-70" title="Ctrl+S">{file.name}</span>{/if}
+      <Button size="sm" variant="outline" title="Ctrl+O" onclick={() => openFile()}>Open</Button>
+      <Button size="sm" title="Ctrl+S (Ctrl+Shift+S: Save as)" onclick={() => saveFile()}>
+        Save
+      </Button>
+      <Separator orientation="vertical" />
+    {/if}
     <Toggle bind:pressed={isHistoryOpen} size="sm" title="History" aria-label="History">
       <HistoryIcon />
     </Toggle>

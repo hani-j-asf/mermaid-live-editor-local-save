@@ -1,4 +1,5 @@
 import { waitForRender } from '#lib/util/autoSync.js';
+import { saveExport } from '#lib/util/fileAccess.svelte.js';
 import { inputState, updateCodeStore, validatedState } from '#lib/util/state.svelte.js';
 import { version as FAVersion } from '@fortawesome/fontawesome-free/package.json';
 import dayjs from 'dayjs';
@@ -87,6 +88,15 @@ ${svgString}`);
 };
 
 const simulateDownload = (download: string, href: string): void => {
+  // Prefer a "Save as" dialog (File System Access API); fall back to a normal download.
+  void fetch(href)
+    .then((response) => response.blob())
+    .then((blob) => saveExport(download, blob))
+    .catch(() => false)
+    .then((saved) => saved || anchorDownload(download, href));
+};
+
+const anchorDownload = (download: string, href: string): void => {
   const a = document.createElement('a');
   a.download = download;
   a.href = href;

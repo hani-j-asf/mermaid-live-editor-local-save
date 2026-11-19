@@ -5,6 +5,18 @@
 
 Edit, preview and share mermaid charts/diagrams.
 
+> **About this fork:** adds working with real files on your disk, running fully locally.
+>
+> - **Open** a `.mmd` or `.md` file (Ctrl+O). In Markdown files only the first ` ```mermaid ` block is edited; the rest of the file stays untouched.
+> - **Save** straight back into that file with **Ctrl+S** (Ctrl+Shift+S: save as). No downloads, line endings are preserved.
+> - **PNG/SVG export** asks where to save the file instead of dropping it into Downloads.
+>
+> Uses the [File System Access API](https://developer.mozilla.org/docs/Web/API/File_System_API), so it needs Edge or Chrome (other browsers keep the original behaviour).
+>
+> **Quick start on Windows:** install [Node.js](https://nodejs.org) (LTS), run `corepack enable pnpm` and `pnpm install` once in this folder, then double-click `start-editor.cmd`.
+>
+> All other features and docs below are from the upstream [mermaid-js/mermaid-live-editor](https://github.com/mermaid-js/mermaid-live-editor).
+
 ## Features
 
 - Edit and preview flowcharts, sequence diagrams, gantt diagrams in real time.

@@ -1,4 +1,4 @@
-engineStrict: true
+engineStrict: false # local: allow current Node LTS
 autoInstallPeers: true
 allowBuilds:
   deasync: true
